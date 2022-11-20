@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hello-dotnet", "examples\hello-dotnet\hello-dotnet.csproj", "{698CFEF8-5EB8-40E5-9555-634DEBEB3BCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{DAA586F9-5EB4-4A06-BAAE-198797ED1B8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host_function", "host_function\host_function.csproj", "{7086EB71-4C07-4B12-8B48-64D9A5870B0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{698CFEF8-5EB8-40E5-9555-634DEBEB3BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{698CFEF8-5EB8-40E5-9555-634DEBEB3BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{698CFEF8-5EB8-40E5-9555-634DEBEB3BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{698CFEF8-5EB8-40E5-9555-634DEBEB3BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7086EB71-4C07-4B12-8B48-64D9A5870B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7086EB71-4C07-4B12-8B48-64D9A5870B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7086EB71-4C07-4B12-8B48-64D9A5870B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7086EB71-4C07-4B12-8B48-64D9A5870B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{698CFEF8-5EB8-40E5-9555-634DEBEB3BCF} = {DAA586F9-5EB4-4A06-BAAE-198797ED1B8A}
+		{7086EB71-4C07-4B12-8B48-64D9A5870B0F} = {DAA586F9-5EB4-4A06-BAAE-198797ED1B8A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75C90319-1ADC-41AE-B34F-8EBBBF5991F8}
+	EndGlobalSection
+EndGlobal
