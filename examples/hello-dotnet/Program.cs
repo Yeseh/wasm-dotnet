@@ -1,22 +1,15 @@
 ﻿using Wasmtime;
 
-// EXAMPLE: Initialize Wasmtime, and execute a WASI function 
+// EXAMPLE: Import host functions into the wasi module 
 //          Set environment variables in the WASI module
 
-// Initialize Wasmtime context
 using var engine = new Engine();
 using var store = new Store(engine);
 using var linker = new Linker(engine);
 
 var wasiConfig = new WasiConfiguration()
-    // Write WASI stdout to host stdout
     .WithInheritedStandardOutput()
-    // Write WASI stderr to host stderr
-    .WithInheritedStandardError()
-    // Only give access to DOTNET_VERSION env var 
-    .WithEnvironmentVariables(new (string, string)[]{
-        ("DOTNET_VERSION", "7")
-    });
+    .WithInheritedStandardError();
 
 store.SetWasiConfiguration(wasiConfig);
 // Inject expected WASI imports such as fd_read

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hello-dotnet", "examples\he
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{DAA586F9-5EB4-4A06-BAAE-198797ED1B8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host_function", "host_function\host_function.csproj", "{7086EB71-4C07-4B12-8B48-64D9A5870B0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host_function", "examples\host_function\host_function.csproj", "{7086EB71-4C07-4B12-8B48-64D9A5870B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
