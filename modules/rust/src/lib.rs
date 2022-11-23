@@ -12,6 +12,7 @@ struct Ciovec {
     buf_len: Size,
 }
 
+// Imports from host
 #[link(wasm_import_module = "wasi_snapshot_preview1")]
 extern "C" {
     fn fd_write(fd: Fd, iovs_ptr: *const Ciovec, iovs_len: Size, nwritten: *mut Size) -> Errno;
@@ -22,10 +23,11 @@ extern "C" {
 extern "C" {
     fn dotnet_hello();
     fn dotnet_hello_params(int: i32, float: f32);
-    fn mem_ptr() -> i32;
+    fn mem_read(ptr: Ptr, len: usize) -> Ptr;
     // fn dotnet_hello_struct(strct: DotnetInput);
 }
 
+// Exported functions for the examples
 #[no_mangle]
 pub extern "C" fn hello() {
     let dotnet_version = std::env::var("DOTNET_VERSION").unwrap_or(String::from("NOT FOUND"));
@@ -39,15 +41,16 @@ pub unsafe extern "C" fn host_functions() {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn read_struct_raw() -> f32 {
-    let start_ptr = mem_ptr() as i32;
+pub unsafe extern "C" fn read_struct_raw(ptr: Ptr, len: usize) -> f32 {
+    let start_ptr = mem_read(ptr, len);
+
     println!("Rust ptr: {:?}", start_ptr as i32);
     // We know the C# Input struct has a size of 8 bytes
     // With the first 4 being an integer, last 4 a float
-    let int_slice = slice::from_raw_parts(start_ptr as *const u8, 4);
+    // let int_slice = slice::from_raw_parts(start_ptr as *const u8, 4);
     // let float_slice = slice::from_raw_parts(start_ptr.add(4), 4);
 
-    println!("{:?}", int_slice);
+    // println!("{:?}", int_slice);
     // println!("{:?}", float_slice);
 
     // WASM uses little endian

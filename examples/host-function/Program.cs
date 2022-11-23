@@ -69,17 +69,19 @@ public class Program
             (int i, float f) => Console.WriteLine($"Got int: {i} float: {f} from WASI!"));
 
         linker.DefineFunction(
-            "dotnet", "mem_ptr",
-            (Caller caller) => {
+            "dotnet", "mem_read",
+            (Caller caller, int ptr, int len) => {
                 var mem = caller.GetMemory("memory");
-                if (mem != null) { 
-                    var ptr = mem.GetPointer();
-                    Console.WriteLine("Mem accessed by module");
-                    Console.WriteLine("Mem ptr: ", ptr);
-                    Console.WriteLine("Conv ptr: ", (int)ptr);
-                    return (int)mem.GetPointer(); 
+                // Exception is not a thing known in WASI
+                // What happens?
+                if (mem == null) { throw new Exception("No exported memory found"); }
+
+                unsafe {
+                    var data = mem.GetSpan(ptr, len).
+                    return &data;
                 }
-                return -1;
+
+                return &span.ToArray();
             }
         );
 
@@ -103,7 +105,7 @@ public class Program
         var input = new Input(10, 6.5f);
         Console.WriteLine($"Input len: {Marshal.SizeOf<Input>()}");
         
-        // mem.Write<Input>(0, input);
+        mem.Write<Input>(0, input);
 
         var read_struct = instance.GetFunction<float>("read_struct_raw");
         if (read_struct == null) { throw new Exception("Read struct not found"); }
