@@ -1,25 +1,29 @@
-using System.Net;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
-using Orleans;
-using Orleans.Hosting;
-using WasiOrleans;
+using WasiOrleans.Grains;
+using Microsoft.Extensions.DependencyInjection;
 
-await Host.CreateDefaultBuilder(args)
+var host = Host.CreateDefaultBuilder(args)
     .UseOrleans((ctx, silo) =>
     {
         var instanceId = ctx.Configuration.GetValue<int>("InstanceId");
-        var port = 11_111;
 
         silo.UseLocalhostClustering();
 
-        silo.UseDashboard();
+        //silo.UseDashboard();
 
         // Enable distributed logging;
         silo.AddActivityPropagation();
-    })
-    // .ConfigureWebHostDefaults(webBuilder => {
-    //     webBuilder.UseStartup<Startup>();
 
-    // })
-    .RunConsoleAsync();
+        // TODO: As GrainService?
+        silo.ConfigureServices(s =>
+        {
+            s.AddSingleton<IModuleResolverService, LocalModuleResolver>();
+        });
+    }).Build();
+
+var moduleResolver = host.Services.GetRequiredService<IModuleResolverService>();
+
+await moduleResolver.Init();
+
+await host.RunAsync();

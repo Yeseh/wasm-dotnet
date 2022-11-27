@@ -1,39 +1,35 @@
-using WasiOrleans.Grains;
 using Orleans.Concurrency;
-using Orleans.Runtime;
 using Wasmtime;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.IO;
+using WasiOrleans.Grains;
 
 [Reentrant]
-public class WasiModuleResolverLocal : GrainService, IWasiModuleResolver, IDisposable
+public class LocalModuleResolver : IModuleResolverService, IDisposable
 {
     // TODO: For now, use single WASI context
-    public Wasmtime.Engine Engine { get; private set; } = null!;
+    public Engine Engine { get; private set; } = null!;
 
-    private Dictionary<String, Wasmtime.Module> _modules = new();
+    private Dictionary<string, Module> _modules = new();
             
     private const string ModuleBasePath = "C:\\Users\\JesseWellenberg\\repo\\wasm-dotnet\\modules\\compiled";
 
     public ValueTask<Engine> GetEngine() => ValueTask.FromResult(Engine);
-
-    public override async Task Init(IServiceProvider serviceProvider)
+    
+    public LocalModuleResolver()
     {
         Engine = new();
         _modules = new();
+    }
 
+    public async Task Init()
+    {
        var modules = await ListModules(); 
 
         foreach (var path in modules)
         {
             var modulePath = Path.Join(ModuleBasePath, path);
-            var module = Wasmtime.Module.FromFile(Engine, path);
+            var module = Module.FromFile(Engine, modulePath);
             _modules.Add(path, module);
         }
-
-        await base.Init(serviceProvider);
     }
 
     public Task<Wasmtime.Module> GetModule(string modulename)
@@ -44,11 +40,10 @@ public class WasiModuleResolverLocal : GrainService, IWasiModuleResolver, IDispo
         return Task.FromResult(module);
     }
 
-    new public void Dispose()
+    public void Dispose()
     {
-        if (Engine is not null) { Engine.Dispose(); } 
-
-        base.Dispose();
+        if (Engine is not null) { Engine.Dispose(); }
+        GC.SuppressFinalize(this);
     }
 
     public Task<List<string>> ListModules()

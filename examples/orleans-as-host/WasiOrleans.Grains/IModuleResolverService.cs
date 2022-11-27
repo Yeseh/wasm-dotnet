@@ -1,10 +1,13 @@
+using Orleans.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WasiOrleans.Grains;
 
-public interface IWasiModuleResolver
+public interface IModuleResolverService
 {
+    Task Init();
+
     Task<List<string>> ListModules();
 
     Task<Wasmtime.Module> GetModule(string moduleName);

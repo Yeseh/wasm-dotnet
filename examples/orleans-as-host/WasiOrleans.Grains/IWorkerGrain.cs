@@ -3,7 +3,7 @@ using Orleans;
 
 namespace WasiOrleans.Grains;
 
-public interface IWasiWorkerGrain : IGrainWithIntegerKey
+public interface IWorkerGrain : IGrainWithIntegerKey 
 {
     ValueTask CallAsync();
 }

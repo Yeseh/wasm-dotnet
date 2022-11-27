@@ -10,11 +10,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Microsoft.Orleans.Client" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Orleans.SDK" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WasiOrleans.Silo\WasiOrleans.Silo.csproj" />
+    <ProjectReference Include="..\WasiOrleans.Grains\WasiOrleans.Grains.csproj" />
   </ItemGroup>
 
 </Project>
