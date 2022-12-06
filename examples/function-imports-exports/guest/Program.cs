@@ -1,11 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
-using System;
 
 public class Program
 {
     public static int Main(string[] args)
     {
-        Console.WriteLine("Called guest entrypoint!");
+        Interop.HostHello();
         return 0;
     }
     
