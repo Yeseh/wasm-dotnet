@@ -10,7 +10,7 @@ extern void host_hello ();
 __attribute__((export_name("guest_hello")))
 void guest_hello() {
     if (!method_GuestHello) {
-        method_GuestHello = lookup_dotnet_method("function-imports-exports-guest.dll", "functions_imports_exports_guest", "Program", "GuestHello", -1);
+        method_GuestHello = lookup_dotnet_method("guest_c_interop.dll", "guest_c_interop", "Program", "GuestHello", -1);
         assert(method_GuestHello);
     }
 
@@ -23,7 +23,7 @@ void guest_hello() {
 }
 
 void attach_internal_calls() {
-    // This links the C function guest_hello to GuestHello in Interop.cs
+    // This links the C function host_hello to HostHello in Interop.cs
     // as long as the C# code uses the [MethodImpl(MethodImplOptions.InternalCall)] attribute
-    mono_add_internal_call("function_imports_exports.Interop::HostHello", host_hello);
+    mono_add_internal_call("guest_c_interop.Interop::HostHello", host_hello);
 }

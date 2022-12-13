@@ -1,6 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿namespace guest_c_interop;
 
-public class Program
+using System.Runtime.CompilerServices;
+
+public partial class Program
 {
     public static int Main(string[] args)
     {
