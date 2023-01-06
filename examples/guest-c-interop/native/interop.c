@@ -5,7 +5,7 @@
 MonoMethod* method_GuestHello;
 
 __attribute__((__import_module__("host"), __import_name__("host_hello")))
-extern void host_hello ();
+extern void host_hello();
 
 __attribute__((export_name("guest_hello")))
 void guest_hello() {
@@ -24,6 +24,6 @@ void guest_hello() {
 
 void attach_internal_calls() {
     // This links the C function host_hello to HostHello in Interop.cs
-    // as long as the C# code uses the [MethodImpl(MethodImplOptions.InternalCall)] attribute
+    // as long as the C# code uses the [MetodImpl(MethodImplOptions.InternalCall)] attribute
     mono_add_internal_call("guest_c_interop.Interop::HostHello", host_hello);
 }
