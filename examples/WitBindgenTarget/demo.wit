@@ -2,15 +2,20 @@ interface host-funcs {
   current-user: func() -> string
 }
 
-world demo {
-  import host: host-funcs
+default world demo {
+  import host: self.host-funcs
 
-  export People interface {
+  export people: interface {
+    record parent {
+      name: string,
+      dead: bool,
+    }
     record person {
       name: string,
       age: u32,
+      parent: parent,
     }
 
-    hello: func(who: option<person>) -> string
+    hello: func(who: option<person>) -> person
   }
 }

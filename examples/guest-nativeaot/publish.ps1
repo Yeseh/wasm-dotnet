@@ -1,0 +1,1 @@
+dotnet publish /p:NativeLib=Static /p:SelfContained=true -r browser-wasm -c Debug /p:TargetArchitecture=wasm /p:PlatformTarget=AnyCPU /p:MSBuildEnableWorkloadResolver=false /p:EmccExtraArgs="-s EXPORTED_FUNCTIONS=guest_hello -s EXPORTED_RUNTIME_METHODS=cwrap" --self-contained

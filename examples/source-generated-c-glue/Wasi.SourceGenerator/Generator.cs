@@ -2,10 +2,34 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 using System.Linq;
+using System.IO;
 using System.Collections.Generic;
 
 namespace Wasi.SourceGenerator
 {
+    class WasiMethod
+    {
+        public string Assembly { get; private set; }
+        public string Namespace { get; private set; }
+        public string Class { get; private set; }
+        public string Name { get; private set; }
+
+        public string FullyQualifiedMethodName => $"{Namespace}.{Class}::{Name}";
+
+        public WasiMethod(
+            string assembly,
+            string @namespace,
+            string @class,
+            string methodName)
+        {
+            Assembly = assembly;
+            Namespace = @namespace;
+            Class = @class;
+            Name = methodName;
+        }
+
+    }
+
     [Generator]
     public class Generator : ISourceGenerator
     {
@@ -21,7 +45,7 @@ namespace Wasi.SourceGenerator
 
         class WasiMethodSyntaxReceiver : ISyntaxContextReceiver
         {
-            public MethodDeclarationSyntax WasiMethod { get; private set; }
+            public WasiMethod WasiMethod { get; private set; }
 
             public MethodType MethodType { get; private set; }
 
@@ -38,12 +62,28 @@ namespace Wasi.SourceGenerator
 
                     if (exportAttribute == null && importAttribute == null ) { return; }
 
+                    WasiMethod = new WasiMethod(
+                        symbol.ContainingAssembly.Name, 
+                        symbol.ContainingNamespace.Name, 
+                        symbol.ContainingType.Name, 
+                        symbol.Name);
+
                     if (exportAttribute != null)  
                     { 
-                        MethodType = MethodType.Export; 
+                        MethodType = MethodType.Export;
+                        var canExport = symbol.IsStatic;
+
+                        WasiMethod = new WasiMethod(
+                            symbol.ContainingAssembly.Name, 
+                            symbol.ContainingNamespace.Name, 
+                            symbol.ContainingType.Name, 
+                            symbol.Name);
 
                     }
-                    else if (importAttribute != null) { MethodType = MethodType.Import; }
+                    else if (importAttribute != null) 
+                    { 
+                        MethodType = MethodType.Import; 
+                    }
                 }
             }
         }
@@ -54,40 +94,7 @@ namespace Wasi.SourceGenerator
 void test_fn();
 ";
 
-            var imports = new List<MethodDeclarationSyntax>();
-            var exports = new List<MethodDeclarationSyntax>();
-
-            foreach (var st in context.Compilation.SyntaxTrees)
-            {
-                var methods = st.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>();
-                var semanticModel = context.Compilation.GetSemanticModel(st);
-
-                foreach (var m in methods)
-                {
-                    var symbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(m);
-                    var attributes = symbol.GetAttributes();
-                    if (!attributes.Any()) { continue; }
-
-                    if (attributes.Any(a => a.AttributeClass.Name == "WasiExportAttribute"))
-                    {
-                        exports.Add(m);
-                    }
-
-                    foreach (var a in attributes)
-                    {
-                        if (a.AttributeClass.Name == "WasiExportAttribute")
-                        {
-                            a.AttributeClass.
-
-                        }
-                    }
-                }
-
-                foreach (var m in methods) 
-                { methodSymbols.Add(m); }
-            } 
-
-           context.AddSource($"interop.g.c", source);
+            File.WriteAllText("interop.c", source);
         }
 
         public void Initialize(GeneratorInitializationContext context) 
