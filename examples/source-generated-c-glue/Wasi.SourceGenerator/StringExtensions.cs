@@ -6,7 +6,12 @@ namespace Wasi.SourceGenerator
 {
     internal static class StringExtensions
     {
-        public static string ToSnakeCase(this string text)
+        public static string ToUpperSnakeCase(this string text)
+        {
+            return text.ToLowerSnakeCase().ToUpperInvariant();
+        }
+            
+        public static string ToLowerSnakeCase(this string text)
         {
             if (text == null)
             {

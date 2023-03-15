@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Runtime.InteropServices;
 
 public sealed class Host 
 {
@@ -17,9 +18,9 @@ public sealed class Host
         var addrSpan = new ReadOnlySpan<byte>((void*)DemoWorld.RETURN_AREA, sizeof(int));
         var lenSpan = new ReadOnlySpan<byte>((void*)(DemoWorld.RETURN_AREA + sizeof(int)), sizeof(int));
 
-        var addr = BitConverter.ToInt32(addrSpan);
         var len = BitConverter.ToInt32(lenSpan);
+        GCHandle.
 
-        return Encoding.UTF8.GetString((byte*)addr, len);
+        return Encoding.UTF8.GetString(addrSpan, len);
     }
 }

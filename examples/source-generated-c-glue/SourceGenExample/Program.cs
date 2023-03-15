@@ -1,4 +1,5 @@
-﻿using Wasi.SourceGenerator;
+﻿using System.Runtime.CompilerServices;
+using Wasi.SourceGenerator;
 
 namespace ConsoleApp;
 
@@ -9,7 +10,7 @@ partial class Program
         Console.WriteLine("Hello");
     }
 
-    [WasiExport("", "dotnet", "hello_from")]
+    [WasiExport("bla", "dotnet", "hello_from")]
     public static int HelloFrom()
     {
         Console.WriteLine("Hello from WASI");
@@ -19,6 +20,8 @@ partial class Program
 
 public static class Interop
 {
-    [WasiImport("", "env", "hello")]
+
+    [MethodImpl(MethodImplOptions.InternalCall)]
+    [WasiImport("bla", "env", "hello")]
     public static extern void Hello();
 }

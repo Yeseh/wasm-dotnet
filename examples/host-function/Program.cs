@@ -55,9 +55,6 @@ public class Program
                 fn dotnet_hello();
                 fn dotnet_hello_params(i: i32, f: f32)
             }
-
-            External reference types (externref) are not yet supported in most languages that compile to WASI.
-            See: arbitrary-data example
         */
         linker.DefineFunction(
             "dotnet", "dotnet_hello", 
