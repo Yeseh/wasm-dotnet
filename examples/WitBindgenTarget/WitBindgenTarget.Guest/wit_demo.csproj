@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Wasi.SDK" Version="0.1.3-preview.10012" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Include="native\*.c"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WasiNativeFileReference Include="$(MSBuildThisFileDirectory)\native\*.c" />
+		<WasiAfterRuntimeLoaded Include="demo_attach_internal_calls" />
+  </ItemGroup>
+
+</Project>
